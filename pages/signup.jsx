@@ -11,9 +11,26 @@ const Mail = () => {
   const [message, setMessage] = useState(null);
   const router = useRouter();
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage(null);
     const form = ["email", "password"];
     const data = {};
     form.forEach((el) => (data[el] = e.target[el].value));
+    console.log(data.password);
+    if (!/(?=.*[A-Z].*[A-Z])/.test(data.password)) {
+      // bracket is important inside note:
+      setMessage("Please use at least one uppercase.");
+      console.log("first");
+      return;
+    }
+    if (!/(?=(.*[0-9]){1,})/.test(data.password)) {
+      setMessage("Please use some digits.");
+      return;
+    }
+    if (!/(?=(.*[!@#$%^&*()\-__+.]){1,})/.test(data.password)) {
+      setMessage("Please use symbols like !,@,#,c,$.");
+      return;
+    }
 
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(({ user }) => {
