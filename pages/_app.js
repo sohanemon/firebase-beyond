@@ -4,6 +4,7 @@ import "../styles/globals.css";
 export const UserContext = createContext({});
 function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState({});
+
   return (
     <>
       <UserContext.Provider value={{ user, setUser }}>

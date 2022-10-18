@@ -1,15 +1,34 @@
-import { useContext } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { useContext, useEffect, useState, useTransition } from "react";
 import { UserContext } from "../../pages/_app";
-import GoogleLoginButton from "./google-login-button";
+import GoogleLoginButton, { auth } from "./google-login-button";
 import Profile from "./profile";
 
 const Index = () => {
-  const { user } = useContext(UserContext);
-  console.log(user);
+  const { user, setUser } = useContext(UserContext);
+  const [render, setRender] = useState(false);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        setTimeout(() => setRender(true));
+      } else {
+        setTimeout(() => setRender(true));
+      }
+    });
+
+    return () => {};
+  }, []);
   return (
     <>
-      <GoogleLoginButton uid={user?.uid} />
-      {user?.uid && <Profile {...user} />}
+      <div>
+        {render && (
+          <>
+            <GoogleLoginButton uid={user?.uid} />
+            <>{user?.uid && <Profile {...user} />}</>
+          </>
+        )}
+      </div>
     </>
   );
 };
