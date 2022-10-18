@@ -21,9 +21,9 @@ const Profile = ({ displayName, photoURL, email, emailVerified }) => {
 
       <section
         style={{ fontFamily: "Montserrat" }}
-        className='  flex font-medium items-center justify-center h-screen'
+        className='  flex font-medium items-center justify-center h-screen shadow-xl'
       >
-        <section className='w-64 mx-auto bg-[#20354b] rounded-2xl px-8 py-6 shadow-lg'>
+        <section className='w-64 mx-auto bg-gray-900 rounded-2xl px-8 py-6 shadow-lg'>
           <div className='flex items-center justify-between'>
             <span className='text-gray-400 text-sm'>আমি</span>
             <span className='text-emerald-400'>
