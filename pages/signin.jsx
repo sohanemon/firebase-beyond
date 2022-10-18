@@ -78,14 +78,7 @@ const Signin = () => {
                   >
                     <span className='text-white'>Continue</span>
                   </button>
-                  <button
-                    onClick={() => console.log(auth.currentUser)}
-                    type='submit'
-                    className='w-full py-3 px-6 rounded-md bg-sky-600
-                              focus:bg-sky-700 active:bg-sky-500'
-                  >
-                    <span className='text-white'>Contsffinue</span>
-                  </button>
+
                   <p>
                     Don't have an account?{" "}
                     <Link href='signup'>

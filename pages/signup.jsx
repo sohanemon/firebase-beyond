@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { auth } from "../components/home/google-login-button";
@@ -16,7 +19,6 @@ const Mail = () => {
     const form = ["email", "password"];
     const data = {};
     form.forEach((el) => (data[el] = e.target[el].value));
-    console.log(data.password);
     if (!/(?=.*[A-Z].*[A-Z])/.test(data.password)) {
       // bracket is important inside note:
       setMessage("Please use at least one uppercase.");
@@ -35,11 +37,15 @@ const Mail = () => {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(({ user }) => {
         setUser(user);
+        sendEmailVerification(auth.currentUser).then(() => {
+          console.info("Verification email send.");
+        });
         router.push("/");
       })
       .catch((error) => {
         setMessage(sliceFirebaseError(error));
       });
+
     e.preventDefault();
   };
 

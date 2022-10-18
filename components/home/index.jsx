@@ -11,14 +11,15 @@ const Index = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        setTimeout(() => setRender(true));
+        setRender(true);
       } else {
-        setTimeout(() => setRender(true));
+        setRender(true);
       }
     });
 
     return () => {};
   }, []);
+  console.log(user);
   return (
     <>
       <div>
