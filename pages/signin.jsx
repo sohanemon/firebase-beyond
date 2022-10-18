@@ -80,7 +80,7 @@ const Signin = () => {
                   </button>
 
                   <p>
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <Link href='signup'>
                       <a className='text-blue-500 hover:underline'>
                         Register now
