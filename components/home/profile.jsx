@@ -3,8 +3,10 @@ import { signOut } from "firebase/auth";
 import { UserContext } from "../../pages/_app";
 import { useContext } from "react";
 import Toast from "../toast";
+import { useRouter } from "next/router";
 
 const Profile = ({ displayName, photoURL, email, emailVerified }) => {
+  const router = useRouter();
   const { setUser } = useContext(UserContext);
   const handleSignOut = () => {
     signOut(auth)
@@ -25,7 +27,12 @@ const Profile = ({ displayName, photoURL, email, emailVerified }) => {
       >
         <section className='w-64 mx-auto bg-gray-900 rounded-2xl px-8 py-6 shadow-lg'>
           <div className='flex items-center justify-between'>
-            <span className='text-gray-400 text-sm'>আমি</span>
+            <span
+              onClick={() => router.push("/update")}
+              className='text-gray-400 text-sm font-mono cursor-pointer hover:text-gray-200'
+            >
+              Update profile
+            </span>
             <span className='text-emerald-400'>
               <svg
                 onClick={handleSignOut}
@@ -46,7 +53,10 @@ const Profile = ({ displayName, photoURL, email, emailVerified }) => {
           </div>
           <div className='mt-6 w-fit mx-auto'>
             <img
-              src={photoURL}
+              src={
+                photoURL ||
+                "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-unknown-social-media-user-photo-default-avatar-profile-icon-vector-unknown-social-media-user-184816085.jpg"
+              }
               className='rounded-full w-28 '
               alt='profile picture'
             />

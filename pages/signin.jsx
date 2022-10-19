@@ -1,12 +1,16 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { auth } from "../components/home/google-login-button";
 import sliceFirebaseError from "../util/slice-error";
 import { UserContext } from "./_app";
 const Signin = () => {
   const router = useRouter();
+  const emailRef = useRef(null);
 
   const [message, setMessage] = useState(null);
   const { setUser } = useContext(UserContext);
@@ -28,6 +32,28 @@ const Signin = () => {
       });
     e.preventDefault();
   };
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+  const handlePasswordReset = async () => {
+    setMessage(null);
+    if (!validateEmail(emailRef.current.value)) {
+      setMessage("Please check your email!");
+      return;
+    }
+
+    sendPasswordResetEmail(auth, emailRef.current.value)
+      .then(() => {
+        setMessage("Password reset link sent!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -47,6 +73,7 @@ const Signin = () => {
                       Email
                     </label>
                     <input
+                      ref={emailRef}
                       type='email'
                       name='email'
                       id='email'
@@ -60,6 +87,12 @@ const Signin = () => {
                       <label htmlFor='password' className='text-gray-700'>
                         Password
                       </label>
+                      <span
+                        onClick={handlePasswordReset}
+                        className='select-none cursor-pointer text-blue-500 hover:text-blue-600'
+                      >
+                        Forgot password?
+                      </span>
                     </div>
                     <input
                       type='password'
