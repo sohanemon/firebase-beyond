@@ -19,7 +19,6 @@ const Index = () => {
 
     return () => {};
   }, []);
-  console.log(user);
   return (
     <>
       <div>

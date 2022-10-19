@@ -1,3 +1,5 @@
+import { sendEmailVerification } from "firebase/auth";
+import { auth } from "./home/google-login-button";
 const Toast = () => {
   return (
     <>
@@ -7,7 +9,14 @@ const Toast = () => {
           role='alert'
         >
           <div className='flex p-4 shadow-lg'>
-            Please check your inbox to verify email.
+            Check your inbox to verify email or{" "}
+            <button
+              onClick={handleResend}
+              className='font-semibold pl-2 cursor-pointer text-blue-400 hover:to-blue-500 '
+            >
+              {" "}
+              resend?
+            </button>
           </div>
         </div>
       </div>
@@ -16,3 +25,8 @@ const Toast = () => {
 };
 
 export default Toast;
+const handleResend = async () => {
+  sendEmailVerification(auth.currentUser).then(() => {
+    alert("Send!");
+  });
+};

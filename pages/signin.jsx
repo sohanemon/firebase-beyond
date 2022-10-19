@@ -8,6 +8,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { auth } from "../components/home/google-login-button";
 import sliceFirebaseError from "../util/slice-error";
 import { UserContext } from "./_app";
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+/* --------------------------------------------------------------------- */
 const Signin = () => {
   const router = useRouter();
   const emailRef = useRef(null);
@@ -41,13 +49,7 @@ const Signin = () => {
       });
     e.preventDefault();
   };
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
+
   const handlePasswordReset = async () => {
     setMessage(null);
     if (!validateEmail(emailRef.current.value)) {
@@ -63,7 +65,6 @@ const Signin = () => {
         console.log(error);
       });
   };
-
   return (
     !user.uid && (
       <>
@@ -142,5 +143,6 @@ const Signin = () => {
     )
   );
 };
+export { validateEmail };
 
 export default Signin;

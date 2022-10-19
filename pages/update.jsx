@@ -1,17 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import { auth } from "../components/home/google-login-button";
 import { UserContext } from "./_app";
-import { updateProfile } from "firebase/auth";
+import { updateProfile, updateEmail } from "firebase/auth";
 import { useRouter } from "next/router";
+import { validateEmail } from "./signin";
 
 const Update = () => {
   const { user } = useContext(UserContext);
   const router = useRouter();
   const [name, setName] = useState();
   const [photoURL, setPhotoURL] = useState();
+  const [email, setEmail] = useState();
   useEffect(() => {
     setName(user.displayName);
     setPhotoURL(user.photoURL);
+    setEmail(user.email);
+    console.log(user);
     return () => {};
   }, []);
 
@@ -23,12 +27,20 @@ const Update = () => {
     })
       .then(() => {
         console.log("updated");
-        router.push("/");
+        email === user.email && router.push("/");
       })
       .catch((error) => {
         console.log(error);
       });
-    console.log("first");
+    if (email !== user.email)
+      updateEmail(auth.currentUser, email)
+        .then(() => {
+          console.log("email updated");
+          router.push("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   };
 
   return (
@@ -58,6 +70,26 @@ const Update = () => {
     focus:ring-2 focus:ring-sky-300 focus:outline-none
     invalid:ring-2 invalid:ring-red-400'
                       value={name}
+                    />
+                  </div>
+                  <div className='space-y-2'>
+                    <label htmlFor='email' className='text-gray-700'>
+                      Email
+                    </label>
+                    <input
+                      onChange={(e) => {
+                        return (
+                          validateEmail(e.target.value) &&
+                          setEmail(e.target.value)
+                        );
+                      }}
+                      type='email'
+                      name='email'
+                      id='email'
+                      className='block w-full px-4 py-3 rounded-md border border-gray-300 text-gray-600 transition duration-300
+                                    focus:ring-2 focus:ring-sky-300 focus:outline-none
+                                    invalid:ring-2 invalid:ring-red-400'
+                      value={email}
                     />
                   </div>
                   <div>
