@@ -15,7 +15,6 @@ const Update = () => {
     setName(user.displayName);
     setPhotoURL(user.photoURL);
     setEmail(user.email);
-    console.log(user);
     return () => {};
   }, []);
 
@@ -62,7 +61,7 @@ const Update = () => {
                       Name
                     </label>
                     <input
-                      onChange={(e) => setName(e.target.value)}
+                      onInput={(e) => setName(e.target.value)}
                       type='name'
                       name='name'
                       id='name'
@@ -77,7 +76,7 @@ const Update = () => {
                       Email
                     </label>
                     <input
-                      onChange={(e) => {
+                      onInput={(e) => {
                         return (
                           validateEmail(e.target.value) &&
                           setEmail(e.target.value)
@@ -100,7 +99,7 @@ const Update = () => {
                     </div>
                     <input
                       value={photoURL}
-                      onChange={(e) => setPhotoURL(e.target.value)}
+                      onInput={(e) => setPhotoURL(e.target.value)}
                       type='photoURL'
                       name='photoURL'
                       id='photoURL'
